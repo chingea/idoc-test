@@ -153,7 +153,7 @@ var Grid = function (_React$Component2) {
         React.createElement(
           "div",
           { className: "grid-header" },
-          "Move the cursor to change channels."
+          "Click anywhere then move the cursor to change channels."
         ),
         this.renderChannel(0),
         this.renderChannel(1),
