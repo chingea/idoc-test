@@ -9,12 +9,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var channels = ["Al Arabiya", "BBC", "ANN", "France 24", "CNN", "Al Jazeera", "Global News", "Al Ghad", "France 2"];
+var media = "media/";
 
 $(document).ready(function () {
   $(document).click(function () {
     $("video").each(function (i, vid) {
       vid.play();
     });
+  });
+  $("video").on("canplaythrough", function () {
+    alert("LOADED");
   });
 });
 
@@ -48,7 +52,7 @@ var Channel = function (_React$Component) {
         React.createElement(
           "video",
           { muted: this.props.isActive ? false : "muted", className: this.props.isActive ? "active" : "inactive" },
-          React.createElement("source", { src: channels[this.props.index].concat(".mp4"), type: "video/mp4" })
+          React.createElement("source", { src: media.concat(channels[this.props.index]).concat(".mp4"), type: "video/mp4" })
         )
       );
     }
