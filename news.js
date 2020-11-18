@@ -10,6 +10,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var channels = ["Al Arabiya", "BBC", "ANN", "France 24", "CNN", "Al Jazeera", "Global News", "Al Ghad", "France 2"];
 
+$(window).bind("load", function () {
+  alert("loaded");
+});
+
 $(document).ready(function () {
   $(document).click(function () {
     $("video").each(function (i, vid) {
