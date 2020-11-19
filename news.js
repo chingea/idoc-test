@@ -41,6 +41,7 @@ var Channel = function (_React$Component) {
         React.createElement(
           "video",
           {
+            preload: true,
             muted: this.props.isActive ? false : "muted",
             className: this.props.isActive ? "active" : "inactive",
             id: this.props.index,

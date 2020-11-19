@@ -17,6 +17,7 @@ class Channel extends React.Component {
       onMouseEnter={() => this.props.onMouseEnter(this.props.index)}
       onMouseLeave={this.props.onMouseLeave}>
         <video
+        preload
         muted={this.props.isActive ? false : "muted"}
         className={this.props.isActive ? "active" : "inactive"}
         id={this.props.index}
