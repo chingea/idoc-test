@@ -3,7 +3,7 @@ body {
   background: black;
   font-family: 'EB Garamond', serif;
   font-weight: 400;
-  font-style: italic;
+  color: white;
 }
 
 .grid {
@@ -16,7 +16,8 @@ body {
 }
 
 .grid-header {
-  color: white;
+  font-style: italic;
+  font-weight: 400;
   box-sizing: border-box;
   padding: 15px;
   grid-column: 1 / 4;
@@ -24,6 +25,9 @@ body {
 
 .grid-item {
   padding: 0 15px 25px 15px;
+}
+
+.grid-item-playing {
   cursor: none;
 }
 
@@ -37,7 +41,26 @@ video {
   filter: grayscale(1);
 }
 
-
 .active {
   border: 5px solid yellow;
+}
+
+.play-button {
+  position: fixed;
+  z-index: 1;
+  font-weight: 800;
+  top: 50%;
+  left: 50%;
+  font-size: 100px;
+  transform: translate(-50%, -50%);
+  border: 5px solid white;
+  border-radius: 80px;
+  padding: 0 150px;
+  background: black;
+  user-select: none;
+  cursor: pointer;
+}
+
+.none {
+  display: none;
 }
