@@ -65,7 +65,8 @@ var Grid = function (_React$Component2) {
     var _this3 = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props));
 
     _this3.state = {
-      activeIndex: null
+      activeIndex: null,
+      canBePlayed: [false, false, false, false, false, false, false, false, false]
     };
     _this3.handleMouseEnter = _this3.handleMouseEnter.bind(_this3);
     _this3.handleMouseLeave = _this3.handleMouseLeave.bind(_this3);
@@ -77,7 +78,12 @@ var Grid = function (_React$Component2) {
   _createClass(Grid, [{
     key: "handleCanPlayThrough",
     value: function handleCanPlayThrough(index) {
-      alert(index + " can be played through.");
+      var canBePlayed = this.state.canBePlayed;
+      canBePlayed[index] = true;
+      this.setState({
+        canBePlayed: canBePlayed
+      });
+      alert(canBePlayed);
     }
   }, {
     key: "handleMouseEnter",

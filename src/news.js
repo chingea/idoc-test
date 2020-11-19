@@ -32,7 +32,8 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: null
+      activeIndex: null,
+      canBePlayed: [false, false, false, false, false, false, false, false, false]
     }
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
@@ -40,7 +41,12 @@ class Grid extends React.Component {
     this.handleCanPlayThrough = this.handleCanPlayThrough.bind(this);
   }
   handleCanPlayThrough(index) {
-    alert(index + " can be played through.");
+    var canBePlayed = this.state.canBePlayed;
+    canBePlayed[index] = true;
+    this.setState({
+      canBePlayed: canBePlayed
+    });
+    alert(canBePlayed);
   }
   handleMouseEnter(index) {
     if (this.props.playing) {
