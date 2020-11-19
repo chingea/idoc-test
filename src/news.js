@@ -33,20 +33,10 @@ class Grid extends React.Component {
     super(props);
     this.state = {
       activeIndex: null,
-      canBePlayed: [false, false, false, false, false, false, false, false, false]
     }
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.handleCanPlayThrough = this.handleCanPlayThrough.bind(this);
-  }
-  handleCanPlayThrough(index) {
-    var canBePlayed = this.state.canBePlayed;
-    canBePlayed[index] = true;
-    this.setState({
-      canBePlayed: canBePlayed
-    });
-    alert(canBePlayed);
   }
   handleMouseEnter(index) {
     if (this.props.playing) {
@@ -109,7 +99,7 @@ class Grid extends React.Component {
         onMouseLeave={this.handleMouseLeave}
         isActive={this.state.activeIndex === i}
         playing={this.props.playing}
-        onCanPlayThrough={this.handleCanPlayThrough} />
+        onCanPlayThrough={this.props.handleCanPlayThrough} />
     )
   }
   render() {
@@ -139,7 +129,7 @@ class PlayButton extends React.Component {
       <div
       className={this.props.playing ? "none" : "play-button"}
       id="play"
-      onClick={this.props.handleClick}>PLAY</div>
+      onClick={this.props.handleClick}>{this.props.canPlay ? "PLAY" : "LOADING"}</div>
     )
   }
 }
@@ -148,9 +138,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      playing: false
+      playing: false,
+      canBePlayed: [false, false, false, false, false, false, false, false, false],
+      canPlay: false
     }
     this.play = this.play.bind(this);
+    this.handleCanPlayThrough = this.handleCanPlayThrough.bind(this);
   }
   play() {
     $("video").each((i, vid) => {
@@ -160,11 +153,26 @@ class App extends React.Component {
       playing: true
     });
   }
+  handleCanPlayThrough(index) {
+    var canBePlayed = this.state.canBePlayed;
+    var trueArray = new Array(9).fill(true);
+    canBePlayed[index] = true;
+    let checker = arr => arr.every(v => v === true);
+    console.log(checker(canBePlayed));
+    this.setState({
+      canBePlayed: canBePlayed,
+      canPlay: checker
+    });
+  }
   render() {
     return (
       <div>
-        <Grid playing={this.state.playing}/>
-        <PlayButton handleClick={this.play} playing={this.state.playing}/>
+        <Grid playing={this.state.playing} handleCanPlayThrough={this.handleCanPlayThrough}/>
+        <PlayButton
+        handleClick={this.play}
+        playing={this.state.playing}
+        canBePlayed={this.state.canBePlayed}
+        canPlay={this.state.canPlay}/>
       </div>
     )
   }

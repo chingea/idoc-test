@@ -65,27 +65,15 @@ var Grid = function (_React$Component2) {
     var _this3 = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props));
 
     _this3.state = {
-      activeIndex: null,
-      canBePlayed: [false, false, false, false, false, false, false, false, false]
+      activeIndex: null
     };
     _this3.handleMouseEnter = _this3.handleMouseEnter.bind(_this3);
     _this3.handleMouseLeave = _this3.handleMouseLeave.bind(_this3);
     _this3.handleKeyPress = _this3.handleKeyPress.bind(_this3);
-    _this3.handleCanPlayThrough = _this3.handleCanPlayThrough.bind(_this3);
     return _this3;
   }
 
   _createClass(Grid, [{
-    key: "handleCanPlayThrough",
-    value: function handleCanPlayThrough(index) {
-      var canBePlayed = this.state.canBePlayed;
-      canBePlayed[index] = true;
-      this.setState({
-        canBePlayed: canBePlayed
-      });
-      alert(canBePlayed);
-    }
-  }, {
     key: "handleMouseEnter",
     value: function handleMouseEnter(index) {
       if (this.props.playing) {
@@ -157,7 +145,7 @@ var Grid = function (_React$Component2) {
         onMouseLeave: this.handleMouseLeave,
         isActive: this.state.activeIndex === i,
         playing: this.props.playing,
-        onCanPlayThrough: this.handleCanPlayThrough });
+        onCanPlayThrough: this.props.handleCanPlayThrough });
     }
   }, {
     key: "render",
@@ -204,7 +192,7 @@ var PlayButton = function (_React$Component3) {
           className: this.props.playing ? "none" : "play-button",
           id: "play",
           onClick: this.props.handleClick },
-        "PLAY"
+        this.props.canPlay ? "PLAY" : "LOADING"
       );
     }
   }]);
@@ -221,9 +209,12 @@ var App = function (_React$Component4) {
     var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this5.state = {
-      playing: false
+      playing: false,
+      canBePlayed: [false, false, false, false, false, false, false, false, false],
+      canPlay: false
     };
     _this5.play = _this5.play.bind(_this5);
+    _this5.handleCanPlayThrough = _this5.handleCanPlayThrough.bind(_this5);
     return _this5;
   }
 
@@ -238,13 +229,34 @@ var App = function (_React$Component4) {
       });
     }
   }, {
+    key: "handleCanPlayThrough",
+    value: function handleCanPlayThrough(index) {
+      var canBePlayed = this.state.canBePlayed;
+      var trueArray = new Array(9).fill(true);
+      canBePlayed[index] = true;
+      var checker = function checker(arr) {
+        return arr.every(function (v) {
+          return v === true;
+        });
+      };
+      console.log(checker(canBePlayed));
+      this.setState({
+        canBePlayed: canBePlayed,
+        canPlay: checker
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return React.createElement(
         "div",
         null,
-        React.createElement(Grid, { playing: this.state.playing }),
-        React.createElement(PlayButton, { handleClick: this.play, playing: this.state.playing })
+        React.createElement(Grid, { playing: this.state.playing, handleCanPlayThrough: this.handleCanPlayThrough }),
+        React.createElement(PlayButton, {
+          handleClick: this.play,
+          playing: this.state.playing,
+          canBePlayed: this.state.canBePlayed,
+          canPlay: this.state.canPlay })
       );
     }
   }]);
