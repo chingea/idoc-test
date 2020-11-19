@@ -40,7 +40,13 @@ var Channel = function (_React$Component) {
           onMouseLeave: this.props.onMouseLeave },
         React.createElement(
           "video",
-          { muted: this.props.isActive ? false : "muted", className: this.props.isActive ? "active" : "inactive", id: this.props.index },
+          {
+            muted: this.props.isActive ? false : "muted",
+            className: this.props.isActive ? "active" : "inactive",
+            id: this.props.index,
+            onCanPlayThrough: function onCanPlayThrough() {
+              return _this2.props.onCanPlayThrough(_this2.props.index);
+            } },
           React.createElement("source", { src: media.concat(channels[this.props.index]).concat(".mp4"), type: "video/mp4" })
         )
       );
@@ -64,10 +70,16 @@ var Grid = function (_React$Component2) {
     _this3.handleMouseEnter = _this3.handleMouseEnter.bind(_this3);
     _this3.handleMouseLeave = _this3.handleMouseLeave.bind(_this3);
     _this3.handleKeyPress = _this3.handleKeyPress.bind(_this3);
+    _this3.handleCanPlayThrough = _this3.handleCanPlayThrough.bind(_this3);
     return _this3;
   }
 
   _createClass(Grid, [{
+    key: "handleCanPlayThrough",
+    value: function handleCanPlayThrough(index) {
+      alert(index + " can be played through.");
+    }
+  }, {
     key: "handleMouseEnter",
     value: function handleMouseEnter(index) {
       if (this.props.playing) {
@@ -138,7 +150,8 @@ var Grid = function (_React$Component2) {
         onMouseEnter: this.handleMouseEnter,
         onMouseLeave: this.handleMouseLeave,
         isActive: this.state.activeIndex === i,
-        playing: this.props.playing });
+        playing: this.props.playing,
+        onCanPlayThrough: this.handleCanPlayThrough });
     }
   }, {
     key: "render",

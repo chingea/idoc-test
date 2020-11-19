@@ -40,7 +40,7 @@ class Grid extends React.Component {
     this.handleCanPlayThrough = this.handleCanPlayThrough.bind(this);
   }
   handleCanPlayThrough(index) {
-    alert(index.concat(" can be played through."));
+    alert(index + " can be played through.");
   }
   handleMouseEnter(index) {
     if (this.props.playing) {
