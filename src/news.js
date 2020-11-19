@@ -16,7 +16,11 @@ class Channel extends React.Component {
       className={"grid-item".concat(this.props.playing ? " grid-item-playing" : "")}
       onMouseEnter={() => this.props.onMouseEnter(this.props.index)}
       onMouseLeave={this.props.onMouseLeave}>
-        <video muted={this.props.isActive ? false : "muted"} className={this.props.isActive ? "active" : "inactive"} id={this.props.index}>
+        <video
+        muted={this.props.isActive ? false : "muted"}
+        className={this.props.isActive ? "active" : "inactive"}
+        id={this.props.index}
+        onCanPlayThrough={() => this.props.onCanPlayThrough(this.props.index)}>
           <source src={media.concat(channels[this.props.index]).concat(".mp4")} type="video/mp4" />
         </video>
       </div>
@@ -33,6 +37,10 @@ class Grid extends React.Component {
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleCanPlayThrough = this.handleCanPlayThrough.bind(this);
+  }
+  handleCanPlayThrough(index) {
+    alert(index.concat(" can be played through."));
   }
   handleMouseEnter(index) {
     if (this.props.playing) {
@@ -94,7 +102,8 @@ class Grid extends React.Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         isActive={this.state.activeIndex === i}
-        playing={this.props.playing} />
+        playing={this.props.playing}
+        onCanPlayThrough={this.handleCanPlayThrough} />
     )
   }
   render() {
