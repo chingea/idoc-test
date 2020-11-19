@@ -3,17 +3,6 @@
 const channels = ["Al Arabiya", "BBC", "ANN", "France 24", "CNN", "Al Jazeera", "Global News", "Al Ghad", "France 2"]
 const media = "media/"
 
-$(document).ready(function() {
-  $(document).click(function() {
-    $("video").each((i, vid) => {
-      vid.play();
-    });
-  });
-  $("video").on("canplaythrough", function() {
-    alert("LOADED");
-  });
-})
-
 class Channel extends React.Component {
   constructor(props) {
     super(props);
@@ -24,10 +13,10 @@ class Channel extends React.Component {
   render() {
     return (
       <div
-      className="grid-item"
+      className={"grid-item".concat(this.props.playing ? " grid-item-playing" : "")}
       onMouseEnter={() => this.props.onMouseEnter(this.props.index)}
       onMouseLeave={this.props.onMouseLeave}>
-        <video muted={this.props.isActive ? false : "muted"} className={this.props.isActive ? "active" : "inactive"}>
+        <video muted={this.props.isActive ? false : "muted"} className={this.props.isActive ? "active" : "inactive"} id={this.props.index}>
           <source src={media.concat(channels[this.props.index]).concat(".mp4")} type="video/mp4" />
         </video>
       </div>
@@ -46,9 +35,11 @@ class Grid extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
   handleMouseEnter(index) {
-    this.setState({
-      activeIndex: index
-    });
+    if (this.props.playing) {
+      this.setState({
+        activeIndex: index
+      });
+  }
   }
   handleMouseLeave() {
     this.setState({
@@ -102,7 +93,8 @@ class Grid extends React.Component {
         index={i}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
-        isActive={this.state.activeIndex === i} />
+        isActive={this.state.activeIndex === i}
+        playing={this.props.playing} />
     )
   }
   render() {
@@ -123,14 +115,42 @@ class Grid extends React.Component {
   }
 }
 
-class App extends React.Component {
+class PlayButton extends React.Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
-      <Grid />
+      <div
+      className={this.props.playing ? "none" : "play-button"}
+      id="play"
+      onClick={this.props.handleClick}>PLAY</div>
+    )
+  }
+}
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      playing: false
+    }
+    this.play = this.play.bind(this);
+  }
+  play() {
+    $("video").each((i, vid) => {
+      vid.play();
+    });
+    this.setState({
+      playing: true
+    });
+  }
+  render() {
+    return (
+      <div>
+        <Grid playing={this.state.playing}/>
+        <PlayButton handleClick={this.play} playing={this.state.playing}/>
+      </div>
     )
   }
 }

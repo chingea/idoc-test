@@ -11,17 +11,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var channels = ["Al Arabiya", "BBC", "ANN", "France 24", "CNN", "Al Jazeera", "Global News", "Al Ghad", "France 2"];
 var media = "media/";
 
-$(document).ready(function () {
-  $(document).click(function () {
-    $("video").each(function (i, vid) {
-      vid.play();
-    });
-  });
-  $("video").on("canplaythrough", function () {
-    alert("LOADED");
-  });
-});
-
 var Channel = function (_React$Component) {
   _inherits(Channel, _React$Component);
 
@@ -44,14 +33,14 @@ var Channel = function (_React$Component) {
       return React.createElement(
         "div",
         {
-          className: "grid-item",
+          className: "grid-item".concat(this.props.playing ? " grid-item-playing" : ""),
           onMouseEnter: function onMouseEnter() {
             return _this2.props.onMouseEnter(_this2.props.index);
           },
           onMouseLeave: this.props.onMouseLeave },
         React.createElement(
           "video",
-          { muted: this.props.isActive ? false : "muted", className: this.props.isActive ? "active" : "inactive" },
+          { muted: this.props.isActive ? false : "muted", className: this.props.isActive ? "active" : "inactive", id: this.props.index },
           React.createElement("source", { src: media.concat(channels[this.props.index]).concat(".mp4"), type: "video/mp4" })
         )
       );
@@ -81,9 +70,11 @@ var Grid = function (_React$Component2) {
   _createClass(Grid, [{
     key: "handleMouseEnter",
     value: function handleMouseEnter(index) {
-      this.setState({
-        activeIndex: index
-      });
+      if (this.props.playing) {
+        this.setState({
+          activeIndex: index
+        });
+      }
     }
   }, {
     key: "handleMouseLeave",
@@ -146,7 +137,8 @@ var Grid = function (_React$Component2) {
         index: i,
         onMouseEnter: this.handleMouseEnter,
         onMouseLeave: this.handleMouseLeave,
-        isActive: this.state.activeIndex === i });
+        isActive: this.state.activeIndex === i,
+        playing: this.props.playing });
     }
   }, {
     key: "render",
@@ -175,19 +167,66 @@ var Grid = function (_React$Component2) {
   return Grid;
 }(React.Component);
 
-var App = function (_React$Component3) {
-  _inherits(App, _React$Component3);
+var PlayButton = function (_React$Component3) {
+  _inherits(PlayButton, _React$Component3);
+
+  function PlayButton(props) {
+    _classCallCheck(this, PlayButton);
+
+    return _possibleConstructorReturn(this, (PlayButton.__proto__ || Object.getPrototypeOf(PlayButton)).call(this, props));
+  }
+
+  _createClass(PlayButton, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        {
+          className: this.props.playing ? "none" : "play-button",
+          id: "play",
+          onClick: this.props.handleClick },
+        "PLAY"
+      );
+    }
+  }]);
+
+  return PlayButton;
+}(React.Component);
+
+var App = function (_React$Component4) {
+  _inherits(App, _React$Component4);
 
   function App(props) {
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+    var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this5.state = {
+      playing: false
+    };
+    _this5.play = _this5.play.bind(_this5);
+    return _this5;
   }
 
   _createClass(App, [{
+    key: "play",
+    value: function play() {
+      $("video").each(function (i, vid) {
+        vid.play();
+      });
+      this.setState({
+        playing: true
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return React.createElement(Grid, null);
+      return React.createElement(
+        "div",
+        null,
+        React.createElement(Grid, { playing: this.state.playing }),
+        React.createElement(PlayButton, { handleClick: this.play, playing: this.state.playing })
+      );
     }
   }]);
 
