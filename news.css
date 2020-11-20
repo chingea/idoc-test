@@ -46,6 +46,8 @@ video {
 }
 
 .play-button {
+  width: 35%;
+  text-align: center;
   position: fixed;
   z-index: 1;
   font-weight: 800;
@@ -58,7 +60,14 @@ video {
   padding: 0 150px;
   background: black;
   user-select: none;
+}
+
+.play {
   cursor: pointer;
+}
+
+.loading {
+  cursor: not-allowed;
 }
 
 .none {
