@@ -41,7 +41,7 @@ var Channel = function (_React$Component) {
         React.createElement(
           "video",
           {
-            preload: true,
+            preload: "auto",
             muted: this.props.isActive ? false : "muted",
             className: this.props.isActive ? "active" : "inactive",
             id: this.props.index,
@@ -187,12 +187,13 @@ var PlayButton = function (_React$Component3) {
   _createClass(PlayButton, [{
     key: "render",
     value: function render() {
+      var buttonClass = this.props.canPlay ? "play-button play" : "play-button loading";
       return React.createElement(
         "div",
         {
-          className: this.props.playing ? "none" : "play-button",
+          className: this.props.playing ? "none" : buttonClass,
           id: "play",
-          onClick: this.props.handleClick },
+          onClick: this.props.canPlay ? this.props.handleClick : "none" },
         this.props.canPlay ? "PLAY" : "LOADING"
       );
     }
@@ -235,15 +236,16 @@ var App = function (_React$Component4) {
       var canBePlayed = this.state.canBePlayed;
       var trueArray = new Array(9).fill(true);
       canBePlayed[index] = true;
-      var checker = function checker(arr) {
-        return arr.every(function (v) {
-          return v === true;
-        });
+      var countOccurrences = function countOccurrences(arr, val) {
+        return arr.reduce(function (a, v) {
+          return v === val ? a + 1 : a;
+        }, 0);
       };
-      console.log(checker(canBePlayed));
+      var canPlay = countOccurrences(canBePlayed, true) === 9;
+      console.log(canPlay);
       this.setState({
         canBePlayed: canBePlayed,
-        canPlay: checker
+        canPlay: canPlay
       });
     }
   }, {

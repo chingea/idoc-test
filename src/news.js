@@ -17,7 +17,7 @@ class Channel extends React.Component {
       onMouseEnter={() => this.props.onMouseEnter(this.props.index)}
       onMouseLeave={this.props.onMouseLeave}>
         <video
-        preload
+        preload="auto"
         muted={this.props.isActive ? false : "muted"}
         className={this.props.isActive ? "active" : "inactive"}
         id={this.props.index}
@@ -126,11 +126,14 @@ class PlayButton extends React.Component {
     super(props);
   }
   render() {
+    let buttonClass = this.props.canPlay ? "play-button play" : "play-button loading";
     return (
       <div
-      className={this.props.playing ? "none" : "play-button"}
+      className={this.props.playing ? "none" : buttonClass}
       id="play"
-      onClick={this.props.handleClick}>{this.props.canPlay ? "PLAY" : "LOADING"}</div>
+      onClick={this.props.canPlay ? this.props.handleClick : "none"}>
+      {this.props.canPlay ? "PLAY" : "LOADING"}
+      </div>
     )
   }
 }
@@ -158,11 +161,12 @@ class App extends React.Component {
     var canBePlayed = this.state.canBePlayed;
     var trueArray = new Array(9).fill(true);
     canBePlayed[index] = true;
-    let checker = arr => arr.every(v => v === true);
-    console.log(checker(canBePlayed));
+    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+    let canPlay = countOccurrences(canBePlayed, true) === 9;
+    console.log(canPlay);
     this.setState({
       canBePlayed: canBePlayed,
-      canPlay: checker
+      canPlay: canPlay
     });
   }
   render() {
